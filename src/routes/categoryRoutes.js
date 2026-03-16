@@ -48,7 +48,7 @@ const router = Router();
  *       '400':
  *         description: 'Falha na busca.'
  */
-router.get('/pesquisa', categoryController.search);
+router.get('/search', categoryController.search);
 
 /**
  * @swagger

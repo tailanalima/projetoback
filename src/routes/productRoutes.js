@@ -63,7 +63,7 @@ const router = Router();
  *       '400':
  *         description: 'Erro na busca de produtos.'
  */
-router.get('/pesquisa', productController.search);
+router.get('/search', productController.search);
 
 /**
  * @swagger

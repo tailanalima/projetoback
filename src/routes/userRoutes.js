@@ -3,7 +3,7 @@ const userController = require('../controllers/UserController');
 const authController = require('../controllers/AuthController');
 const authMiddleware = require('../middleware/auth');
 
-const router = Router();
+const router = new Router();
 
 /**
  * @swagger
@@ -40,7 +40,7 @@ const router = Router();
  *       '400':
  *         description: 'Credenciais inválidas ou campos ausentes.'
  */
-router.post('/login', authController.generateToken);
+router.post('/token', authController.generateToken);
 
 /**
  * @swagger
