@@ -2,16 +2,19 @@ const Category = require('../models/Category');
 
 class CategoryController {
   // GET /v1/category/search
-  
+ 
+  // Lista categorias com suporte a paginação e ordenação 
 async search(req, res) {
   try {
-    // Definimos valores padrão caso o teste não envie nada
+    // Define paginação: padrão 12 itens por página, começando na página 1
     const limit = req.query.limit ? parseInt(req.query.limit) : 12;
     const page = req.query.page ? parseInt(req.query.page) : 1;
     
+    // Se limit for -1, desabilita o limite (traz todos os registros)
     const queryLimit = limit === -1 ? null : limit;
     const queryOffset = limit === -1 ? 0 : (page - 1) * limit;
 
+    // Busca no banco contando o total e trazendo os registros da página
     const { count, rows } = await Category.findAndCountAll({
       limit: queryLimit,
       offset: queryOffset,
@@ -25,12 +28,13 @@ async search(req, res) {
       page,
     });
   } catch (e) {
-    // Se der erro, o console vai te mostrar a mensagem real agora!
+    // Se der erro, o console vai mostrar
     console.error("ERRO_BUSCA:", e.message);
     return res.status(400).json({ error: e.message });
   }
 }
   // POST /v1/category
+  // Cria uma nova categoria
   async create(req, res) {
     try {
       const { name, slug, use_in_menu } = req.body;
@@ -42,6 +46,7 @@ async search(req, res) {
   }
 
   // GET /v1/category/:id
+  // Busca uma única categoria pelo ID (Primary Key)
   async getById(req, res) {
     try {
       const category = await Category.findByPk(req.params.id);
@@ -53,6 +58,7 @@ async search(req, res) {
   }
 
   // PUT /v1/category/:id
+  // Atualiza os dados de uma categoria existente
   async update(req, res) {
     try {
       const category = await Category.findByPk(req.params.id);
@@ -68,6 +74,7 @@ async search(req, res) {
   }
 
   // DELETE /v1/category/:id
+  // Remove uma categoria do banco de dados
   async delete(req, res) {
     try {
       const category = await Category.findByPk(req.params.id);

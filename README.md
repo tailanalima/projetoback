@@ -35,7 +35,10 @@ O projeto conta com uma suíte de **19 testes de integração**, garantindo que 
 
 Para rodar a suíte de testes:
 ```bash
+#para rodar os teste uma a um
 npx jest --runInBand
+#para rodar todos de uma vez
+npm test
 Status: 19/19 testes aprovados. ✅
 
 ⚙️ Como Instalar e Rodar

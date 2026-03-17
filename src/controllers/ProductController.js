@@ -43,15 +43,17 @@ class ProductController {
 
   async search(req, res) {
     try {
+      // Extrai parâmetros de paginação e o filtro de faixa de preço da URL
       const { limit = 12, page = 1, 'price-range': priceRange } = req.query;
       const where = {};
 
-      // Lógica do price-range (Ex: 400-700)
+      // Filtra produtos entre valores mínimo e máximo (ex: 100-500)
       if (priceRange) {
         const [min, max] = priceRange.split('-');
         where.price = { [Op.between]: [min, max] };
       }
 
+      // Busca produtos trazendo junto suas imagens e variações/opções
       const { count, rows } = await Product.findAndCountAll({
         where,
         limit: parseInt(limit) === -1 ? null : parseInt(limit),
@@ -64,11 +66,13 @@ class ProductController {
       return res.status(400).json({ error: e.message });
     }
   }
+  // Busca um produto específico incluindo TODAS as suas relações
   async getById(req, res) {
     try {
       const product = await Product.findByPk(req.params.id, {
         include: ['images', 'options', 'categories']
       });
+      // Retorna o produto ou 404 caso o ID não exista
       return product ? res.json(product) : res.status(404).send();
     } catch (e) {
       return res.status(400).send();
@@ -77,6 +81,7 @@ class ProductController {
 
   async update(req, res) {
     try {
+      // Localiza o produto e atualiza apenas os dados básicos do corpo da requisição
       const product = await Product.findByPk(req.params.id);
       if (!product) return res.status(404).send();
       await product.update(req.body);
@@ -88,6 +93,7 @@ class ProductController {
 
   async delete(req, res) {
     try {
+      // Localiza o produto e o remove (o Sequelize cuidará das associações se houver ON DELETE CASCADE)
       const product = await Product.findByPk(req.params.id);
       if (!product) return res.status(404).send();
       await product.destroy();
