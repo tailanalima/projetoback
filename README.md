@@ -45,7 +45,7 @@ Status: 19/19 testes aprovados. ✅
 Clone o repositório:
 
 Bash
-git clone [https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git](https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git)
+git clone [https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git](https://github.com/tailanalima/projetoback)
 Instale as dependências:
 
 Bash
@@ -54,11 +54,16 @@ Configure as Variáveis de Ambiente:
 Crie um arquivo .env na raiz do projeto com as suas credenciais do Supabase:
 
 Snippet de código
+# Configurações do Servidor
+PORT=3000
+
+# Configurações do Banco de Dados (PostgreSQL/Supabase)
+DB_DIALECT=postgres
 DB_HOST=seu_host_supabase
 DB_USER=postgres
-DB_PASS=sua_senha
+DB_PASS=sua_senha_supabase
 DB_NAME=postgres
-JWT_SECRET=sua_chave_secreta
+DB_PORT=5432
 Inicie o servidor:
 
 Bash
@@ -67,7 +72,7 @@ npm run dev
 A documentação interativa da API pode ser acessada em:
 http://localhost:3000/api-docs
 
-🎨 Desenvolvido por: [Tailana e Guilherme]
+🎨 Desenvolvido por: [Maria Tailana Ferreira e Guilherme]
 
 
 
