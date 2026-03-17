@@ -4,19 +4,26 @@ const ProductImage = require('../models/ProductImage');
 const ProductOption = require('../models/ProductOption');
 const { Op, Sequelize } = require('sequelize');
 
+//Service responsável pela lógica de negócio de Produtos.
 class ProductService {
-  /**
-   * Realiza uma busca complexa por produtos com base em query params.
-   */
+  
+   //Realiza uma busca complexa por produtos com base em query params.
+   
   async search(query) {
+   // Destruturação com valores default para paginação
     const { limit = 12, page = 1, fields, match, category_ids, 'price-range': priceRange } = query;
+    
+    // Configuração base da consulta Sequelize
+    // distinct: true é vital para contar corretamente registros em JOINS 1:N
     const findOptions = { where: {}, include: [], distinct: true }; // Adicionado distinct para evitar duplicatas
 
+    // Lógica de Paginação (Ignorada se limit for -1)
     if (limit !== '-1') {
         findOptions.limit = parseInt(limit);
         findOptions.offset = (parseInt(page) - 1) * parseInt(limit);
     }
 
+    // Filtro de Busca Textual (Nome ou Descrição) usando LIKE
     if (match) {
         findOptions.where[Op.or] = [
             { nome: { [Op.like]: `%${match}%` } },
@@ -24,6 +31,7 @@ class ProductService {
         ];
     }
     
+    // Filtro por Categorias (Relacionamento Many-to-Many)
     if (category_ids) {
         findOptions.include.push({
             model: Category, as: 'categories',
@@ -32,11 +40,13 @@ class ProductService {
         });
     }
 
+    // Filtro por Faixa de Preço
     if (priceRange) {
         const [min, max] = priceRange.split('-').map(Number);
         findOptions.where.preco = { [Op.between]: [min, max] };
     }
     
+    // Filtros Dinâmicos de Opções (ex: option[1]=azul,vermelho)
     for (const key in query) {
         if (key.startsWith('option[')) {
             const optionId = key.match(/\[(\d+)\]/)[1];
@@ -45,6 +55,7 @@ class ProductService {
                 model: ProductOption, as: 'options',
                 where: {
                     id: optionId,
+                    // Uso de JSON_CONTAINS para verificar valores dentro de uma coluna JSON no MySQL
                     valores_do_produto: {
                         [Op.and]: optionValues.map(val => Sequelize.where(
                             Sequelize.fn('JSON_CONTAINS', Sequelize.col('valores_do_produto'), `"${val}"`), 1
@@ -55,16 +66,20 @@ class ProductService {
         }
     }
 
+    // Includes padrão para garantir que imagens, opções e categorias venham no retorno
     findOptions.include.push(
         { model: ProductImage, as: 'images', attributes: ['id', 'path'] },
         { model: ProductOption, as: 'options' },
         { model: Category, as: 'categories', attributes: ['id'], through: { attributes: [] } }
     );
 
+    // Seleção de campos específicos (SQL Select)
     if (fields) findOptions.attributes = fields.split(',');
     
+    // Executa a busca e conta o total de registros
     const { count, rows } = await Product.findAndCountAll(findOptions);
 
+    // Formatação dos dados para o padrão da API (Data Mapping)
     const data = rows.map(product => {
         const plainProduct = product.get({ plain: true });
         return {
@@ -78,7 +93,7 @@ class ProductService {
   }
 
   /**
-   * Busca um único produto por seu ID, incluindo associações.
+   * Busca um produto específico por ID com todas as suas associações.
    */
   async findById(id) {
     const product = await Product.findByPk(id, {
@@ -91,6 +106,7 @@ class ProductService {
 
     if(!product) return null;
 
+    // Normalização do objeto de retorno
     const plainProduct = product.get({ plain: true });
     return {
         ...plainProduct,
@@ -99,8 +115,9 @@ class ProductService {
     };
   }
 
-  /**
-   * Cria um novo produto e suas associações de forma transacional.
+ /**
+   * Cria um produto. Usa transação para garantir que se a imagem ou opção falhar, 
+   * o produto não seja criado (Atomicidade).
    */
   async create(data) {
     const { category_ids, images, options, ...productData } = data;
@@ -108,9 +125,11 @@ class ProductService {
     try {
         const product = await Product.create(productData, { transaction });
 
+        // Vincula categorias (Tabela N:N)
         if (category_ids && category_ids.length > 0) {
             await product.setCategories(category_ids, { transaction });
         }
+        // Cria registros de imagens
         if (images && Array.isArray(images)) {
             const imagePromises = images.map(img => ProductImage.create({
                 product_id: product.id,
@@ -118,6 +137,7 @@ class ProductService {
             }, { transaction }));
             await Promise.all(imagePromises);
         }
+        // Cria opções/variações do produto
         if (options && Array.isArray(options)) {
             const optionPromises = options.map(opt => {
                 const valores = opt.value || opt.values;
@@ -142,7 +162,8 @@ class ProductService {
   }
 
   /**
-   * Atualiza um produto e suas associações de forma transacional.
+   * Atualiza produto, imagens e opções.
+   * Lógica complexa que decide entre criar, atualizar ou deletar associações.
    */
   async update(id, data) {
     const { category_ids, images, options, ...productData } = data;
@@ -155,12 +176,15 @@ class ProductService {
             return false;
         }
 
+        // Atualiza os dados básicos do produto
         await product.update(productData, { transaction });
 
+        // Atualiza Categorias (Sobrescreve as antigas)
         if (category_ids) {
             await product.setCategories(category_ids, { transaction });
         }
 
+        // Sincronização de Imagens (Delete ou Create)
         if (images && Array.isArray(images)) {
             for (const image of images) {
                 if (image.id && image.deleted) {
@@ -174,6 +198,7 @@ class ProductService {
             }
         }
 
+        // Sincronização de Opções (Delete, Update ou Create)
         if (options && Array.isArray(options)) {
             for (const option of options) {
                 if (option.id && option.deleted) {
@@ -207,7 +232,8 @@ class ProductService {
   }
 
   /**
-   * Deleta um produto pelo seu ID.
+   * Remove o produto do banco de dados.
+   * Nota: Se houver ON DELETE CASCADE no DB, as imagens/opções somem automaticamente.
    */
   async delete(id) {
     const result = await Product.destroy({ where: { id } });
@@ -215,5 +241,5 @@ class ProductService {
   }
 }
 
-// Isso garante que todos que usarem o serviço estarão usando o mesmo objeto (padrão Singleton).
+// Exporta uma instância única (Singleton) para ser reutilizada na aplicação.
 module.exports = new ProductService();

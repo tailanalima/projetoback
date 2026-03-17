@@ -72,3 +72,6 @@ http://localhost:3000/api-docs
 
 
 🎓 Curso: Geração Tech 3.0
+
+
+
