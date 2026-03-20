@@ -7,10 +7,10 @@ const router = new Router();
 
 /**
  * @swagger
- * /usuario/token:
+ * /user/token:
  *   post:
  *     tags:
- *       - Usuários
+ *       - Users
  *     summary: Autentica um usuário e retorna um token JWT.
  *     description: Realiza o login do usuário com email e senha para obter um token de acesso.
  *     requestBody:
@@ -44,10 +44,10 @@ router.post('/token', authController.generateToken);
 
 /**
  * @swagger
- * /usuario/{id}:
+ * /user/{id}:
  *   get:
  *     tags:
- *       - Usuários
+ *       - Users
  *     summary: Busca um usuário pelo seu ID.
  *     description: Retorna os dados públicos de um usuário específico.
  *     parameters:
@@ -80,10 +80,10 @@ router.get('/:id', userController.getById);
 
 /**
  * @swagger
- * /usuario:
+ * /user:
  *   post:
  *     tags:
- *       - Usuários
+ *       - Users
  *     summary: Cria um novo usuário.
  *     description: Endpoint para registrar um novo usuário no sistema.
  *     requestBody:
@@ -124,12 +124,12 @@ router.post('/', userController.create);
 
 /**
  * @swagger
- * /usuario/{id}:
+ * /user/{id}:
  *   put:
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - Usuários
+ *       - Users
  *     summary: Atualiza os dados de um usuário.
  *     description: 'Atualiza o nome, sobrenome e/ou email de um usuário existente. Requer autenticação.'
  *     parameters:
@@ -169,12 +169,12 @@ router.put('/:id', authMiddleware, userController.update);
 
 /**
  * @swagger
- * /usuario/{id}:
+ * /user/{id}:
  *   delete:
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - Usuários
+ *       - Users
  *     summary: Deleta um usuário.
  *     description: Remove um usuário do banco de dados. Requer autenticação.
  *     parameters:

@@ -64,10 +64,10 @@ class App {
     this.server.use('/v1/user', userRoutes);
 
     // SEÇÃO 03: Endpoints de Categorias (Padrão: /v1/category)
-    this.server.use('/v1/category', categoryRoutes);
+    this.server.use('/category', categoryRoutes);
 
     // SEÇÃO 04: Endpoints de Produtos (Padrão: /v1/product)
-    this.server.use('/v1/product', productRoutes);
+    this.server.use('/product', productRoutes);
   }
 }
 

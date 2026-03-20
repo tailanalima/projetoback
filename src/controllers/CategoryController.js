@@ -1,7 +1,7 @@
 const Category = require('../models/Category');
 
 class CategoryController {
-  // GET /v1/category/search
+  // GET /category/search
  
   // Lista categorias com suporte a paginação e ordenação 
 async search(req, res) {
@@ -33,19 +33,19 @@ async search(req, res) {
     return res.status(400).json({ error: e.message });
   }
 }
-  // POST /v1/category
+  // POST /category
   // Cria uma nova categoria
   async create(req, res) {
     try {
-      const { name, slug, use_in_menu } = req.body;
-      const category = await Category.create({ name, slug, use_in_menu });
+      const { name, slug, useInMenu, } = req.body;
+      const category = await Category.create({ name, slug, useInMenu });
       return res.status(201).json(category);
     } catch (e) {
       return res.status(400).json({ error: e.message });
     }
   }
 
-  // GET /v1/category/:id
+  // GET /category/:id
   // Busca uma única categoria pelo ID (Primary Key)
   async getById(req, res) {
     try {
@@ -57,15 +57,15 @@ async search(req, res) {
     }
   }
 
-  // PUT /v1/category/:id
+  // PUT /category/:id
   // Atualiza os dados de uma categoria existente
   async update(req, res) {
     try {
       const category = await Category.findByPk(req.params.id);
       if (!category) return res.status(404).send();
       
-      const { name, slug, use_in_menu } = req.body;
-      await category.update({ name, slug, use_in_menu });
+      const { name, slug, useInMenu } = req.body;
+      await category.update({ name, slug, useInMenu });
       
       return res.status(204).send();
     } catch (e) {
@@ -73,7 +73,7 @@ async search(req, res) {
     }
   }
 
-  // DELETE /v1/category/:id
+  // DELETE /category/:id
   // Remove uma categoria do banco de dados
   async delete(req, res) {
     try {

@@ -7,16 +7,16 @@ const router = Router();
 /**
  * @swagger
  * tags:
- *   name: Produtos
+ *   name: Products
  *   description: API para gerenciamento de produtos.
  */
 
 /**
  * @swagger
- * /produto/pesquisa:
+ * /product/search:
  *   get:
  *     tags:
- *       - Produtos
+ *       - Products
  *     summary: 'Realiza uma busca avançada por produtos.'
  *     description: 'Retorna uma lista paginada de produtos com base em múltiplos critérios de filtro.'
  *     parameters:
@@ -36,19 +36,19 @@ const router = Router();
  *         name: fields
  *         schema:
  *           type: string
- *         description: 'Campos a serem retornados, separados por vírgula (ex: nome,slug,preco).'
+ *         description: 'Campos a serem retornados, separados por vírgula (ex: name,slug,price).'
  *       - in: query
  *         name: match
  *         schema:
  *           type: string
  *         description: 'Termo para buscar no nome e na descrição dos produtos.'
  *       - in: query
- *         name: category_ids
+ *         name: categoryIds
  *         schema:
  *           type: string
  *         description: 'IDs de categorias separadas por vírgula (ex: 15,24).'
  *       - in: query
- *         name: price-range
+ *         name: priceRange
  *         schema:
  *           type: string
  *         description: 'Faixa de preço no formato min-max (ex: 100-200).'
@@ -67,10 +67,10 @@ router.get('/search', productController.search);
 
 /**
  * @swagger
- * /produto/{id}:
+ * /product/{id}:
  *   get:
  *     tags:
- *       - Produtos
+ *       - Products
  *     summary: 'Busca um produto pelo seu ID.'
  *     description: 'Retorna todos os detalhes de um produto específico, incluindo suas associações (categorias, imagens, opções).'
  *     parameters:
@@ -92,12 +92,12 @@ router.get('/:id', productController.getById);
 
 /**
  * @swagger
- * /produto:
+ * /product:
  *   post:
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - Produtos
+ *       - Products
  *     summary: 'Cria um novo produto.'
  *     description: 'Cadastra um novo produto com todas as suas associações. Requer autenticação.'
  *     requestBody:
@@ -113,13 +113,13 @@ router.get('/:id', productController.getById);
  *                 type: string
  *               price:
  *                 type: number
- *               price_with_discount:
+ *               priceWithDiscount:
  *                 type: number
  *               stock:
  *                 type: integer
  *               description:
  *                 type: string
- *               category_ids:
+ *               categoryIds:
  *                 type: array
  *                 items:
  *                   type: integer
@@ -160,12 +160,12 @@ router.post('/', authMiddleware, productController.create);
 
 /**
  * @swagger
- * /produto/{id}:
+ * /product/{id}:
  *   put:
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - Produtos
+ *       - Products
  *     summary: 'Atualiza um produto existente.'
  *     description: 'Atualiza os dados de um produto e suas associações (imagens, opções). Requer autenticação.'
  *     parameters:
@@ -221,12 +221,12 @@ router.put('/:id', authMiddleware, productController.update);
 
 /**
  * @swagger
- * /produto/{id}:
+ * /product/{id}:
  *   delete:
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - Produtos
+ *       - Products
  *     summary: 'Deleta um produto.'
  *     description: 'Remove um produto do banco de dados. Requer autenticação.'
  *     parameters:

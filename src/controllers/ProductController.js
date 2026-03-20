@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 class ProductController {
   async create(req, res) {
     try {
-      const { images, options, category_ids, ...productData } = req.body;
+      const { images, options, categoryIds, ...productData } = req.body;
       
       // 1. Cria o produto base
       const product = await Product.create(productData);
@@ -14,7 +14,7 @@ class ProductController {
       // 2. Salva as imagens (mapeando o campo content)
       if (images && images.length > 0) {
         await Promise.all(images.map(img => 
-          ProductImage.create({ content: img.content, product_id: product.id })
+          ProductImage.create({ content: img.content, productId: product.id })
         ));
       }
 
@@ -24,14 +24,14 @@ class ProductController {
           ProductOption.create({ 
             ...opt, 
             values: Array.isArray(opt.values) ? opt.values.join(',') : opt.values,
-            product_id: product.id 
+            productId: product.id 
           })
         ));
       }
 
       // 4. Associa categorias (Requisito 04 Seção 01)
-      if (category_ids && category_ids.length > 0) {
-        await product.setCategories(category_ids);
+      if (categoryIds && categoryIds.length > 0) {
+        await product.setCategories(categoryIds);
       }
 
       return res.status(201).json(product);
@@ -44,7 +44,7 @@ class ProductController {
   async search(req, res) {
     try {
       // Extrai parâmetros de paginação e o filtro de faixa de preço da URL
-      const { limit = 12, page = 1, 'price-range': priceRange } = req.query;
+      const { limit = 12, page = 1, priceRange } = req.query;
       const where = {};
 
       // Filtra produtos entre valores mínimo e máximo (ex: 100-500)

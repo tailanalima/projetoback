@@ -7,16 +7,16 @@ const router = Router();
 /**
  * @swagger
  * tags:
- *   name: Categorias
+ *   name: Categories
  *   description: API para gerenciamento de categorias de produtos.
  */
 
 /**
  * @swagger
- * /categoria/pesquisa:
+ * /category/search:
  *   get:
  *     tags:
- *       - Categorias
+ *       - Categories
  *     summary: 'Busca por categorias.'
  *     description: 'Retorna uma lista paginada de categorias, com opções de filtro.'
  *     parameters:
@@ -36,9 +36,9 @@ const router = Router();
  *         name: fields
  *         schema:
  *           type: string
- *         description: 'Campos a serem retornados, separados por vírgula (ex: nome,slug).'
+ *         description: 'Campos a serem retornados, separados por vírgula (ex: name,slug).'
  *       - in: query
- *         name: use_in_menu
+ *         name: useInMenu
  *         schema:
  *           type: boolean
  *         description: 'Filtrar por categorias que devem ser exibidas no menu.'
@@ -52,10 +52,10 @@ router.get('/search', categoryController.search);
 
 /**
  * @swagger
- * /categoria/{id}:
+ * /category/{id}:
  *   get:
  *     tags:
- *       - Categorias
+ *       - Categories
  *     summary: 'Busca uma categoria pelo seu ID.'
  *     description: 'Retorna os detalhes de uma categoria específica.'
  *     parameters:
@@ -75,12 +75,12 @@ router.get('/:id', categoryController.getById);
 
 /**
  * @swagger
- * /categoria:
+ * /category:
  *   post:
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - Categorias
+ *       - Categories
  *     summary: 'Cria uma nova categoria.'
  *     description: 'Cadastra uma nova categoria no sistema. Requer autenticação.'
  *     requestBody:
@@ -90,13 +90,13 @@ router.get('/:id', categoryController.getById);
  *           schema:
  *             type: object
  *             properties:
- *               nome:
+ *               name:
  *                 type: string
  *                 example: 'Calçados'
  *               slug:
  *                 type: string
  *                 example: 'calcados'
- *               use_in_menu:
+ *               useInMenu:
  *                 type: boolean
  *                 example: true
  *     responses:
@@ -111,12 +111,12 @@ router.post('/', authMiddleware, categoryController.create);
 
 /**
  * @swagger
- * /categoria/{id}:
+ * /category/{id}:
  *   put:
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - Categorias
+ *       - Categories
  *     summary: 'Atualiza uma categoria existente.'
  *     description: 'Atualiza os dados de uma categoria. Requer autenticação.'
  *     parameters:
@@ -133,13 +133,13 @@ router.post('/', authMiddleware, categoryController.create);
  *           schema:
  *             type: object
  *             properties:
- *               nome:
+ *               name:
  *                 type: string
  *                 example: 'Calçados e Acessórios'
  *               slug:
  *                 type: string
  *                 example: 'calcados-e-acessorios'
- *               use_in_menu:
+ *               useInMenu:
  *                 type: boolean
  *                 example: false
  *     responses:
@@ -154,12 +154,12 @@ router.put('/:id', authMiddleware, categoryController.update);
 
 /**
  * @swagger
- * /categoria/{id}:
+ * /category/{id}:
  *   delete:
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - Categorias
+ *       - Categories
  *     summary: 'Deleta uma categoria.'
  *     description: 'Remove uma categoria do banco de dados. Requer autenticação.'
  *     parameters:
