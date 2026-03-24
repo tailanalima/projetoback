@@ -40,6 +40,7 @@ npx jest --runInBand
 #para rodar todos de uma vez
 npm test
 Status: 19/19 testes aprovados. ✅
+<img width="737" height="426" alt="image" src="https://github.com/user-attachments/assets/cb7e0c1b-c680-499b-8837-93d15ce5ee2e" />
 
 ⚙️ Como Instalar e Rodar
 Clone o repositório:
