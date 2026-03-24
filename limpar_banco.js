@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const dbConfig = require('./src/config/database'); // Ajuste o caminho do seu config
+const dbConfig = require('./src/config/database'); 
 const sequelize = new Sequelize(dbConfig);
 
 async function limpar() {
