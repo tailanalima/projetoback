@@ -84,12 +84,19 @@ npm run dev
 📖 Documentação (Swagger)
 A documentação interativa da API pode ser acessada em:
 http://localhost:3000/api-docs
+````
+O Swagger ficará assim:
+<img width="720" height="425" alt="image" src="https://github.com/user-attachments/assets/6aeebcf8-1885-415a-bd0d-d6177f21a90e" />
 
-🎨 Desenvolvido por: [Maria Tailana Ferreira e Guilherme de Sousa Lima]
+<img width="716" height="732" alt="image" src="https://github.com/user-attachments/assets/914064d5-0f2a-4b5e-8c8b-8c473be5ccc8" />
+
+<img width="715" height="291" alt="image" src="https://github.com/user-attachments/assets/91afd210-2725-4abc-88f0-0e5faad70d11" />
 
 
+🎨 Desenvolvido por: Maria Tailana Ferreira Lima e Guilherme de Sousa Lima
 
 🎓 Curso: Geração Tech 3.0
+
 
 
 
