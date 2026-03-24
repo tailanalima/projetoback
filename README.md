@@ -45,7 +45,7 @@ Status: 19/19 testes aprovados. ✅
 Clone o repositório:
 
 Bash
-git clone [https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git](https://github.com/tailanalima/projetoback)
+git clone [https://github.com/tailanalima/projetoback]
 Instale as dependências:
 
 Bash
@@ -64,6 +64,17 @@ DB_USER=postgres
 DB_PASS=sua_senha_supabase
 DB_NAME=postgres
 DB_PORT=5432
+
+# Configurações usadas no meu projeto para fins de avaliação: 
+PORT=3001
+
+DB_HOST=aws-0-us-west-2.pooler.supabase.com
+DB_PORT=5432
+DB_USER=postgres.rjhovsnjajgwfmfuvnwi
+DB_PASSWORD=projetotaigui
+DB_NAME=postgres
+DB_DIALECT=postgres
+
 Inicie o servidor:
 
 Bash
@@ -72,7 +83,7 @@ npm run dev
 A documentação interativa da API pode ser acessada em:
 http://localhost:3000/api-docs
 
-🎨 Desenvolvido por: [Maria Tailana Ferreira e Guilherme]
+🎨 Desenvolvido por: [Maria Tailana Ferreira e Guilherme de Sousa Lima]
 
 
 

@@ -23,10 +23,10 @@ class UserController {
       const user = await User.findByPk(req.params.id, {
         attributes: ['id', 'firstname', 'surname', 'email']
       });
-      if (!user) return res.status(404).send();
+      if (!user) return res.status(404).json({ error: 'User not found' });
       return res.status(200).json(user);
     } catch (error) {
-      return res.status(400).send();
+      return res.status(400).json({ error: error.message });
     }
   }
 
@@ -34,13 +34,13 @@ class UserController {
     try {
       // Localiza o usuário pelo ID da URL
       const user = await User.findByPk(req.params.id);
-      if (!user) return res.status(404).send();
+      if (!user) return res.status(404).json({ error: 'User not found' });
       
       // Atualiza os dados permitidos com o que veio no corpo da requisição
       await user.update(req.body);
       return res.status(204).send();
     } catch (error) {
-      return res.status(400).send();
+      return res.status(400).json({ error: error.message });
     }
   }
 
@@ -48,13 +48,13 @@ class UserController {
     try {
       // Busca o usuário para garantir que ele existe antes de deletar
       const user = await User.findByPk(req.params.id);
-      if (!user) return res.status(404).send();
+      if (!user) return res.status(404).json({ error: 'User not found' });
       
       // Remove o usuário do banco de dados definitivamente
       await user.destroy();
       return res.status(204).send();
     } catch (error) {
-      return res.status(400).send();
+      return res.status(400).json({ error: error.message });
     }
   }
 }

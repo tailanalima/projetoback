@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const errorHandler = require('./middleware/errorHandler');
 
 // Importação das rotas
 const userRoutes = require('./routes/userRoutes');
@@ -17,6 +18,7 @@ class App {
     this.middlewares();
     this.swaggerConfig(); // Organiza a documentação Swagger
     this.routes();
+    this.server.use(errorHandler);
   }
 
   middlewares() {
@@ -64,10 +66,10 @@ class App {
     this.server.use('/v1/user', userRoutes);
 
     // SEÇÃO 03: Endpoints de Categorias (Padrão: /v1/category)
-    this.server.use('/category', categoryRoutes);
+    this.server.use('/v1/category', categoryRoutes);
 
     // SEÇÃO 04: Endpoints de Produtos (Padrão: /v1/product)
-    this.server.use('/product', productRoutes);
+    this.server.use('/v1/product', productRoutes);
   }
 }
 

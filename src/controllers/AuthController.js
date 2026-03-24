@@ -30,7 +30,7 @@ class AuthController {
       return res.status(200).json({ token });
     } catch (error) {
       // Retorna erro interno caso ocorra alguma falha no processo
-      return res.status(500).json({ message: "Erro Interno no Servidor", error: error.message });
+      return res.status(500).json({ error: 'Internal server error' });
     }
   }
 }

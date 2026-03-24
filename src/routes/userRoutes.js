@@ -7,7 +7,7 @@ const router = new Router();
 
 /**
  * @swagger
- * /user/token:
+ * /v1/user/token:
  *   post:
  *     tags:
  *       - Users
@@ -44,7 +44,7 @@ router.post('/token', authController.generateToken);
 
 /**
  * @swagger
- * /user/{id}:
+ * /v1/user/{id}:
  *   get:
  *     tags:
  *       - Users
@@ -80,7 +80,7 @@ router.get('/:id', userController.getById);
 
 /**
  * @swagger
- * /user:
+ * /v1/user:
  *   post:
  *     tags:
  *       - Users
@@ -124,7 +124,7 @@ router.post('/', userController.create);
 
 /**
  * @swagger
- * /user/{id}:
+ * /v1/user/{id}:
  *   put:
  *     security:
  *       - bearerAuth: []
@@ -169,7 +169,7 @@ router.put('/:id', authMiddleware, userController.update);
 
 /**
  * @swagger
- * /user/{id}:
+ * /v1/user/{id}:
  *   delete:
  *     security:
  *       - bearerAuth: []

@@ -66,6 +66,7 @@ class ProductController {
       return res.status(400).json({ error: e.message });
     }
   }
+
   // Busca um produto específico incluindo TODAS as suas relações
   async getById(req, res) {
     try {
@@ -73,9 +74,11 @@ class ProductController {
         include: ['images', 'options', 'categories']
       });
       // Retorna o produto ou 404 caso o ID não exista
-      return product ? res.json(product) : res.status(404).send();
+      return product 
+        ? res.json(product) 
+        : res.status(404).json({ error: 'Product not found' });
     } catch (e) {
-      return res.status(400).send();
+      return res.status(400).json({ error: e.message });
     }
   }
 
@@ -83,11 +86,11 @@ class ProductController {
     try {
       // Localiza o produto e atualiza apenas os dados básicos do corpo da requisição
       const product = await Product.findByPk(req.params.id);
-      if (!product) return res.status(404).send();
+      if (!product) return res.status(404).json({ error: 'Product not found' });
       await product.update(req.body);
       return res.status(204).send();
     } catch (e) {
-      return res.status(400).send();
+      return res.status(400).json({ error: e.message });
     }
   }
 
@@ -95,11 +98,11 @@ class ProductController {
     try {
       // Localiza o produto e o remove (o Sequelize cuidará das associações se houver ON DELETE CASCADE)
       const product = await Product.findByPk(req.params.id);
-      if (!product) return res.status(404).send();
+      if (!product) return res.status(404).json({ error: 'Product not found' });
       await product.destroy();
       return res.status(204).send();
     } catch (e) {
-      return res.status(400).send();
+      return res.status(400).json({ error: e.message });
     }
   }
 }
