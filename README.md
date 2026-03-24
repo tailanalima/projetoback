@@ -32,6 +32,7 @@ API REST robusta para gerenciamento de um sistema de E-commerce, desenvolvida co
 ## 🧪 Testes Automatizados
 
 O projeto conta com uma suíte de **19 testes de integração**, garantindo que todos os fluxos críticos (Usuários, Categorias e Produtos) estejam funcionando conforme os requisitos.
+<img width="737" height="426" alt="image" src="https://github.com/user-attachments/assets/9a11d924-1ca5-4847-b8d8-aeb1b6146b77" />
 
 Para rodar a suíte de testes:
 ```bash
@@ -40,7 +41,7 @@ npx jest --runInBand
 #para rodar todos de uma vez
 npm test
 Status: 19/19 testes aprovados. ✅
-<img width="737" height="426" alt="image" src="https://github.com/user-attachments/assets/cb7e0c1b-c680-499b-8837-93d15ce5ee2e" />
+
 
 ⚙️ Como Instalar e Rodar
 Clone o repositório:
